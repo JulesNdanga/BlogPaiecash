@@ -1,0 +1,24 @@
+twig:
+    default_path: '%kernel.project_dir%/templates'
+
+    globals:
+        locales: '%app.locales%'
+        site_name: PaieCash Blog
+        site_url: https://www.paiecash.com
+        site_url_full: https://www.paiecash.com
+        site_email: 
+        site_address: lorem ipsum lorem ipsum lorem ipsum lorem ipsum
+        facebook: 
+        twitter: 
+        linkedin: 
+        youtube: 
+        instagram: 
+        github: 
+        site_author: PaieCash
+        site_version: 1.0.0
+        site_slogan: Introiit cum quaedam festinatis Caesare diu relationibus sed abditus nec venisset nec supervacua multa relationibus videri sed addens publicum abditus.
+        site_keywords: linux opensource debian ubuntu arch manjaro deepin gnu free
+
+when@test:
+    twig:
+        strict_variables: true

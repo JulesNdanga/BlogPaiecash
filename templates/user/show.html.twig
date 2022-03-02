@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ site_name }} - {{ user.nick }}{% endblock %}
+
+{% block body %}
+
+    <h2>{% trans %}Profil de{% endtrans %} {{ user.nick }}</h2>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ user.id }}</td>
+            </tr>
+            <tr>
+                <th>{% trans %}Email{% endtrans %}</th>
+                <td>{{ user.email }}</td>
+            </tr>
+            <tr>
+                <th>{% trans %}Pseudo{% endtrans %}</th>
+                <td>{{ user.nick }}</td>
+            </tr>
+            <tr>
+                <th>Roles</th>
+                <td>
+                    {% if user.roles|json_encode == '["ROLE_USER"]' %}
+                        <span class="text-primary fw-bold">Utilisateur</span>
+                    {% else %}
+                        <span class="text-danger fw-bold">Admin</span>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>{% trans %}Compte vérifié{% endtrans %}</th>
+                <td>{{ user.isVerified ? 'Oui'|trans : 'Non'|trans }}</td>
+            </tr>
+            <tr>
+                <th>{% trans %}Nom{% endtrans %}</th>
+                <td>{{ user.nom }}</td>
+            </tr>
+            <tr>
+                <th>{% trans %}Prénom{% endtrans %}</th>
+                <td>{{ user.prenom }}</td>
+            </tr>
+            <tr>
+                <th>{% trans %}Avatar{% endtrans %}</th>
+                <td><img src="{{ asset('uploads/images/users/' ~ user.avatar) }}" alt="{{ user.prenom }} {{ user.nom }}" class="img-fluid"></td>
+            </tr>
+            <tr>
+                <th>{% trans %}Enregistré le{% endtrans %}</th>
+                <td>{{ user.createdAt|format_datetime('medium', 'short') }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="d-flex justify-content-between align-items-center mt-5">
+        <span>
+            <a class="btn btn-sm btn-success" href="{{ path('user_edit', {'id': user.id}) }}">{% trans %}Modifier le profil{% endtrans %}</a>
+            <button type="reset" class="btn btn-sm btn-secondary">{% trans %}Annuler{% endtrans %}</button>
+        </span>
+        <span>
+            {{ include('user/_delete_form.html.twig') }}
+        </span>
+    </div>
+
+{% endblock %}

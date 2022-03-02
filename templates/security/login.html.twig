@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ site_name }} - {% trans %}Connexion{% endtrans %}{% endblock %}
+
+{% block body %}
+<div class="row d-flex justify-content-center py-5 my-5">
+    <div class="col-4 border p-4 rounded">
+        <form method="post">
+            {% if error %}
+            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+            {% endif %}
+
+            {% if app.user %}
+            <div class="mb-3">
+                {% trans %}Vous êtes connecté(e) en tant que{% endtrans %} {{ app.user.username }}, <a href="{{ path('app_logout') }}">{% trans %}Déconnexion{% endtrans %}</a>
+            </div>
+            {% endif %}
+
+            <h2 class="mb-3 text-center">{% trans %}Connexion{% endtrans %}</h2>
+            <p>
+                <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control"
+                    autocomplete="email" placeholder="E-mail" required autofocus>
+            </p>
+            <p>
+                <input type="password" name="password" id="inputPassword" class="form-control"
+                    autocomplete="current-password" placeholder="Mot de passe" required>
+            </p>
+
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+            {#
+                Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
+                See https://symfony.com/doc/current/security/remember_me.html
+
+                <div class="checkbox mb-3">
+                    <label>
+                        <input type="checkbox" name="_remember_me"> Remember me
+                    </label>
+                </div>
+            #}
+
+            <div class="d-grid gap-2">
+                <button class="btn btn-success" type="submit">{% trans %}Connexion{% endtrans %}</button> 
+                <button type="reset" class="btn btn-secondary">{% trans %}Annuler{% endtrans %}</button>
+            </div>
+        </form>
+
+        <div class="text-center mt-4">
+            <a href="{{ path('app_forgot_password_request') }}" class="text-decoration-none"><i class="fas fa-sync"></i> {% trans %}Mot de passe perdu ?{% endtrans %}</a>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

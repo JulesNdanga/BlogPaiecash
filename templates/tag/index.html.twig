@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ site_name }} - {% trans %}Liste des tags{% endtrans %}{% endblock %}
+
+{% block body %}
+
+    <div class="row pt-4 pb-5">
+        <div class="col-9 pe-4">
+            <h2>{% trans %}Liste des tags{% endtrans %}</h2>
+            <div class="row row-cols-1 row-cols-md-2 g-4 mt-1">
+                {% for tag in tags %}
+                    <div class="col">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h5 class="card-title border-bottom pb-1">
+                                    <a href="{{ path('tag_show', {'slug': tag.slug}) }}" class="text-dark">{{ tag.title }}</a>
+                                </h5>
+                                <p class="card-text">
+                                    <ul class="list-group list-group-flush">
+                                        {% for t in tag.articles %}
+                                            <li class="list-group-item">
+                                                <i class="fas fa-caret-right"></i> 
+                                                <a href="{{ path('article_show', { 'slug': t.slug }) }}">{{ t.title }}</a>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+            {% else %}
+                    Il n'y a aucun enregistrement.
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="col-3">
+            {% block sidebar %}
+                {{ sidebar() }}
+            {% endblock %}
+        </div>
+    </div>
+
+{% endblock %}

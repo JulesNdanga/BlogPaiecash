@@ -1,0 +1,82 @@
+# BlogPaieCash
+`Blo PaieCash` projet de blog basé sur le framework PHP Symfony 5
+
+Version 1.0.0
+
+## Template
+Entièrement basé sur Bootsrap 5 (+ CSS/JS)
+
+## prérequis
+* PHP 7.4.3=+
+* MySQL
+* Symfony CLI (5)
+* Composer
+* Mail server (registration, contact, ...)
+
+## Fonctionnalités
+### Languages, librairies et frameworks
+* PHP 7.4.3
+* MySQL (MariaDB)
+* HTML / CSS
+* Javascript (Aos, Bootstrap)
+* JQuery (Select2)
+* Bootstrap (v5)
+* Google fonts (Poppins)
+* Font awesome 5
+* Captcha
+### Traduction
+* Multilingual
+* TransalatorInterface : FR, EN
+On peut ajouter ou mettre à jour les fichiers de langues avec (par exemple pour le français): `symfony console translation:update --force fr`
+Le fichier se trouve dans /translations. Vous devez terminer la traduction à la main.
+Utilisez la meme commande pour mettre à jour le fichier si vous avez ajouté/modifié la traduction.
+Si vous ajoutez une nouvelle langue, n'oubliez pas de mettre à jour config/services.yaml en ajoutant les 2 premières lettres de la langue à `app.locales` comme ceci (exemple d'ajout de l'espagnol) : `app.locales: [fr, en, es]`
+### Entités
+* Article
+* Comment
+* Tag
+* Category
+* User
+### Pages
+* home
+* article index (Blog)
+* article single
+* categories index
+* category single
+* tags index
+* tag single
+* user profile
+* admin panel
+* contact
+* rss
+* à propos
+* login
+* registration
+* search
+* sitemap.xml
+
+## Pour initialiser le projet :
+* clonez le repository: `https://github.com/JulesNdanga/BlogPaiecash.git`
+* Placez vous dans le nouveau dossier : `cd BlogPaiecash`
+* Installez tous les packages : `composer install`
+* Créez et configurez `.env.local` en copiant `.env` et en modifiant :
+    * Les infos de connexions à MySQL (login/mot de passe, serveur, base de données)
+    * MAILER_DSN : pour envoyer des mails (serveur SMTP)
+    * Changez l'APP-ENV en prod : `APP_ENV=dev`
+* Configurez les variables d'info du site dans **config/packages/twig.yaml**. Ces infos s'appliqueront partout sur le site.
+* Configurez **src/Controller/ContactController.php** en mettant les bonnes infos (e-mail, URL site web, etc.)
+* Créez la nouvelle base de données : `symfony console doctrine:database:create`
+* Créez la migration : `symfony console make:migration`
+* Exportez dans MySQL : `symfony console doctrine:migrations:migrate`
+* Installez CKEditor : `symfony console ckeditor:install`
+* Installez CKEditor assets : `symfony console assets:install public`
+* Videz le cache : `symfony console cache:clear`
+* Créez un premier compte (/register) puis attribuez lui un role admin ["ROLE_ADMIN"] directement depuis PHPMyAdmin, si vous avez une erreur lors de la verification d'email, moidifier aussi en BD à  1
+* Connectez vous avec ce nouveau compte (/login) puis rendez-vous sur le panneau d'administration (/admin)
+* Créez des catégories (/admin/category/new)
+* Créez un article. Les tags seront automatiquement créés quand vous les écrirez pour la première fois en faisant un espace après chaque tag (SELECT2 JQuery plugin). Vous les retrouverez dans la liste déroulante.
+
+
+# TODO
+* Diminuer le nombre de queries SQL
+* Optimisé le moyen de verification par email

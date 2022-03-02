@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ site_name }} - {% endtrans %}Créer un nouvel utilisateur{% endtrans %}{% endblock %}
+
+{% block body %}
+    <h2>{% endtrans %}Créer un nouvel utilisateur{% endtrans %}</h2>
+
+    {{ include('user/_form.html.twig') }}
+
+    <a href="{{ path('user_index') }}">{% trans %}Liste des Utilisateurs{% endtrans %}</a>
+{% endblock %}

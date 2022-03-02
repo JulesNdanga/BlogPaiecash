@@ -1,0 +1,58 @@
+<footer class="mt-auto">
+    <section class="bg-dark py-4">
+        <div class="container">
+            <div class="row py-3">
+                <div class="col-sm-6 text-white">
+                    <h4>
+                        {{ site_name }}
+                        <span class="site-version fst-italic">
+                            version {{ site_version }}
+                        </span>
+                    </h4>
+                    <p class="blog-body fst-italic small">
+                        {{ site_slogan }}
+                    </p>
+                    <p>
+                        <a href="{{ facebook }}" class="text-white"><i class="fab fa-facebook-square fa-2x pe-1"></i></a>
+                        <a href="{{ twitter }}" class="text-white"><i class="fab fa-twitter-square fa-2x px-1"></i></a>
+                        <a href="{{ linkedin }}" class="text-white"><i class="fab fa-linkedin fa-2x px-1"></i></a>
+                        <a href="{{ youtube }}" class="text-white"><i class="fab fa-youtube-square fa-2x px-1"></i></a>
+                        <a href="{{ instagram }}" class="text-white"><i class="fab fa-instagram-square fa-2x px-1"></i></a>
+                        <a href="{{ github }}" class="text-white"><i class="fab fa-github-square fa-2x px-1"></i></a>
+                        <a href="{{ path('contact') }}" class="text-white"><i class="fas fa-envelope-square fa-2x px-1"></i></a>
+                        <a href="{{ path('rss_feed') }}" class="text-white"><i class="fas fa-rss-square fa-2x px-1"></i></a>
+                    </p>
+                    <p class="footer-copy fst-italic">
+                        {{ site_name }} 2021 - {% trans %}Certains droits réservés{% endtrans %} 
+                    </p>
+                </div>
+                <div class="col-sm-3">
+                    <h5 class="text-white">
+                        <a href="{{ path('category_index') }}" class="text-white">
+                            <i class="fas fa-angle-right"></i> {% trans %}Catégories{% endtrans %}
+                        </a>
+                    </h5>
+                    <div>
+                        {% for c in categoriesAll %}
+                            <a href="{{ path('category_show', {'slug': c.slug}) }}" class="badge border text-white mx-1 my-1">
+                                {{ c.title }}
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <h5 class="text-white">
+                        <a href="{{ path('tag_index') }}" class="text-white">
+                            <i class="fas fa-angle-right"></i> {% trans %}Tags{% endtrans %}
+                        </a>
+                    </h5>
+                    {% for t in footerTags %}
+                        <a href="{{ path('tag_show', {'slug': t.slug}) }}" class="badge border text-white mx-1 my-1">
+                            {{ t.title }}
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </section>
+</footer>

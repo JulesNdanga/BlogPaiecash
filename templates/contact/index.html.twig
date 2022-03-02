@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ site_name }} - {% trans %}Nous contacter{% endtrans %}{% endblock %}
+
+{% block body %}
+
+<div class="row d-flex justify-content-center mb-5">
+    <div class="col-9 pe-4">
+
+        <div class="card px-3 pt-3 pb-2 mb-4">
+            <p class="lead px-3">
+                <img src="{{ asset('images/contact.png') }}" alt="Contact" class="img-fluid float-start me-5">
+                <span class="fs-1 fw-bold">{% trans %}Nous contacter{% endtrans %}</span>
+                <br>
+                {% trans %}Chers lecteurs,{% endtrans %}
+                <br>
+                {% trans %}Merci d'utiliser le formulaire ci-dessous pour nous contacter. Nous vous répondrons dès que possible.{% endtrans %}
+                <span class="small fst-italic d-flex justify-content-end mt-5">{{ site_author }}</span>
+            </p>
+        </div>
+
+        {{ form_start(our_form) }}
+        <div class="row">
+            <div class="col">
+                {% trans %}Pseudo{% endtrans %} :<br>
+                {{ form_row(our_form.pseudo, {'label': false}) }}
+            </div>
+            <div class="col">
+                {% trans %}E-mail{% endtrans %} :<br>
+                {{ form_row(our_form.email, {'label': false}) }}
+            </div>
+        </div>
+        {% trans %}Votre message{% endtrans %} :<br>
+        {{ form_row(our_form.message, {'label': false}) }}
+        {% trans %}Merci de recopier le code antispam{% endtrans %} : 
+        {{ form_row(our_form.captcha, {'label': false}) }}
+        <div class="mt-4">
+            <button type="submit" class="btn btn-primary">{% trans %}Envoyer le message{% endtrans %}</button>
+            <button type="reset" class="btn btn-secondary">{% trans %}Annuler{% endtrans %}</button>
+        </div>
+        {{ form_end(our_form) }}
+
+    </div>
+    <div class="col shadow pt-3">
+        {% block sidebar %}
+            {{ sidebar() }}
+        {% endblock %}
+    </div>
+</div>
+
+{% endblock %}

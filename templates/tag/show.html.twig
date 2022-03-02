@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ site_name }} - {% trans %}Tag{% endtrans %}{% endblock %}
+
+{% block body %}
+    <h2 class="mb-4 border-bottom">{% trans %}Tag{% endtrans %} : {{ tag.title }}</h2>
+
+    <div class="row">
+        <div class="col-9">
+            <h5>{% trans %}Les articles du tag{% endtrans %} :</h5>
+            {% for t in tag.articles %}
+                <div class="row py-1">
+                    <div class="col">
+                        <i class="fas fa-chevron-right"></i> 
+                        <a href="{{ path('article_show', { 'slug': t.slug }) }}" class="text-decoration-none">
+                            {{ t.title }}
+                        </a>
+                    </div>
+                </div>
+            {% else %}
+                <div class="row py-1">
+                    <div class="col">
+                        {% trans %}Il n'y a aucun article pour ce tag.{% endtrans %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="col shadow pt-3">
+            {% block sidebar %}
+                {{ sidebar() }}
+            {% endblock %}
+        </div>
+    </div>
+
+{% endblock %}

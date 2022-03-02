@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ site_name }}- {% trans %}Créer un compte{% endtrans %}{% endblock %}
+
+{% block body %}
+{% for flashError in app.flashes('verify_email_error') %}
+<div class="alert alert-danger" role="alert">{{ flashError }}</div>
+{% endfor %}
+<div class="row d-flex justify-content-center py-5 my-5">
+    <div class="col-4 border p-4 rounded">
+        <h2 class="text-center">{% trans %}Créer un compte{% endtrans %}</h2>
+
+        {{ form_start(registrationForm) }}
+        {{ form_row(registrationForm.email) }}
+        {{ form_row(registrationForm.nick) }}
+        {{ form_row(registrationForm.prenom) }}
+        {{ form_row(registrationForm.nom) }}
+        {{ form_row(registrationForm.plainPassword, {
+                label: 'Mot de passe'
+            }) }}
+       
+        <div class="d-grid gap-2">
+            <button type="submit" class="btn btn-success">{% trans %}Créer un compte{% endtrans %}</button> 
+            <button type="reset" class="btn btn-secondary">{% trans %}Annuler{% endtrans %}</button>
+        </div>
+        {{ form_end(registrationForm) }}
+    </div>
+</div>
+
+{% endblock %}

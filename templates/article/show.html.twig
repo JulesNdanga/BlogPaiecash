@@ -1,0 +1,198 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ site_name }} - {{ article.title }}{% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class="col">
+        <p>
+            {% for cat in article.category %}
+            <a href="{{ path('category_show', {'slug': cat.slug}) }}"
+                class="text-decoration-none font-monospace text-dark me-1 lead">
+                {{ cat.title }}
+            </a>
+            {% endfor %}
+            <br>
+            {% for tag in article.tag %}
+            <a href="{{ path('tag_show', {'slug': tag.slug}) }}" class="text-decoration-none text-dark">
+                <span class="article-tag">{{ tag.title }}</span>
+            </a>
+            {% endfor %}
+        </p>
+        <h1>{{ article.title }}</h1>
+        <p class="lead">
+            {{ article.presentation }}
+        </p>
+
+        {% if is_granted('ROLE_ADMIN') %}
+        <table>
+            <tr>
+                <td>
+                    <a class="btn btn-sm btn-warning text-dark"
+                        href="{{ path('article_edit', {'slug': article.slug}) }}">{% trans %}Modifier{% endtrans %}</a>
+                </td>
+                <td>
+                    {{ include('article/_delete_form.html.twig') }}
+                </td>
+            </tr>
+        </table>
+        {% endif %}
+
+        <div class="row">
+            <div class="col-9 pe-4">
+                <img src="{{ asset('uploads/images/articles/' ~ article.image) }}"
+                    class="img-fluid float-start me-3 mt-2" alt="{{ article.title }}">
+                {{ article.content|raw }}
+                <div class="bg-light rounded p-2">
+                    <i class="fas fa-calendar-alt"></i>
+                    {{ article.createdAt|format_datetime('medium', 'short') }}
+                    {% if article.updatedAt %}
+                    &nbsp;|&nbsp;<i class="fas fa-undo"></i>
+                    {{ article.updatedAt|format_datetime('medium', 'short') }}
+                    {% endif %}
+                    &nbsp;|&nbsp;<i class="fas fa-user-tie"></i> {{ article.author.prenom }} {{ article.author.nom }}
+                </div>
+            </div>
+            <div class="col shadow pt-3">
+                {% block sidebar %}
+                {{ sidebar() }}
+                {% endblock %}
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Commentaires -->
+<div id="comments" class="row mt-3">
+    <div class="col-9">
+        <h3 class="border-bottom">{% trans %}Liste des commentaires{% endtrans %}
+            {% if article.comments|length == 0 %}
+                <span class="fs-6">({% trans %}Il n'y a aucun commentaire{% endtrans %})</span>
+            {% else %}
+                ({{ article.comments|length }})
+            {% endif %}
+        </h3>
+
+        <!-- Comments -->
+        {% for comment in article.comments %}
+
+            {% if comment.parent == null %}
+
+                {% if comment.active == true %}
+                <div class="px-3 pt-3">
+                    <h5>
+                        {{ comment.nickname }}
+                        <a href="#reply-comment" data-reply data-id={{ comment.id }} class="reply text-decoration-none">
+                            <i class="fas fa-reply"></i> {% trans %}Répondre{% endtrans %}
+                        </a>
+                    </h5>
+                    <time datetime="{{ comment.createdAt|format_datetime('medium', 'short') }}">
+                        {{ comment.createdAt|format_datetime('medium', 'short') }}
+                    </time>
+                    <p>
+                        {{ comment.content|raw }}
+                    </p>
+                    <p>
+                        {% if app.user %}
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <a class="btn btn-sm btn-warning" href="{{ path('comment_edit', {'id': comment.id}) }}">modifier</a>
+                                        </td>
+                                        <td>
+                                            {{ include('comment/_delete_form.html.twig') }}
+                                        </td>
+                                    </tr>
+                                </table>
+                            {% endif %}
+                        {% endif %}
+                    </p>
+                </div>
+                {% endif %}
+
+                {# show reply #}
+                {% for reply in comment.replies %}
+
+                    {% if reply.active == true %}
+                    <div class="px-3 pt-3 comment-reply">
+                        <h5>
+                            {{ reply.nickname }}
+                        </h5>
+                        <div>
+                            <time datetime="{{ reply.createdAt|format_datetime('medium', 'short') }}">
+                                {{ reply.createdAt|format_datetime('medium', 'short') }}
+                            </time>
+                        </div>
+                        <p>
+                            {{ reply.content|raw }}
+                        </p>
+                        <p>
+                            {% if app.user %}
+                                {% if is_granted('ROLE_ADMIN') %}
+                                    <table>
+                                        <tr>
+                                            <td>
+                                                <!-- Pas bon - mauvais ID de comment -->
+                                                <a class="btn btn-sm btn-warning" href="{{ path('comment_edit', {'id': reply.id}) }}">modifier</a>
+                                            </td>
+                                            <td>
+                                                {{ include('comment/_delete_form.html.twig') }}
+                                            </td>
+                                        </tr>
+                                    </table>
+                                {% endif %}
+                            {% endif %}
+                        </p>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+
+            {% endif %}
+
+        {% endfor %}
+
+    </div>
+</div>
+
+<div class="row mt-5">
+    <div class="col-9">
+        <h3 class="border-bottom">{% trans %}Ajouter un commentaire{% endtrans %}</h3>
+        {{ form_start(commentForm) }}
+        {{ form_row(commentForm.nickname) }}
+        {{ form_row(commentForm.content) }}
+        <table class="mb-3">
+            <tr>
+                <td width="2%">
+                    {{ form_row(commentForm.rgpd, {'label': false}) }}
+                </td>
+                <td class="small">
+                    {% trans %}J'accepte que mes informations soient stockées en base de données. J'ai bien noté qu'en aucun cas ces données ne seront cédées à des tiers.{% endtrans %}
+                </td>
+            </tr>
+        </table>
+        {% trans %}Recopiez le code antispam{% endtrans %} :<br>
+        {{ form_row(commentForm.captcha, {'label': false}) }}
+        <div class="mt-2">
+            <button class="btn btn-sm btn-success">{% trans %}Envoyer le message{% endtrans %}</button>
+            <button class="btn btn-sm btn-secondary" type="reset">{% trans %}Annuler{% endtrans %}</button>
+        </div>
+        {{ form_end(commentForm) }}
+    </div>
+</div>
+
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    window.onload = () => {
+        // Listener event on each Reply button
+        document.querySelectorAll("[data-reply]").forEach(element => {
+            element.addEventListener("click", function () {
+                document.querySelector("#comment_parentid").value = this.dataset.id;
+            });
+        });
+    }
+</script>
+{% endblock %}
